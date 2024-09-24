@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="college.css" rel="stylesheet" type="text/css" />
+    <script src="colleges.js"></script>
+</head>
+<body>
+    <section class="hero is-custom">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title penn-apps-title"><i class="fas fa-wind"></i> <b>ScholarFlow</b></h1>
+            </div>
+        </div>
+    </section>
+
+<button class="button is-primary" id="sidebarToggle" onclick="toggleSidebar()"><span class="icon ">
+    <i class="fas fa-bars"></i>
+</span></button>
+   
+    <div class="sidebar" id="sidebar">
+        <button class="delete is-large close-button" aria-label="close" onclick="toggleSidebar()"></button>
+        <aside class="menu has-background-light">
+            <p class="menu-label">Navigation</p>
+            <ul class="menu-list">
+                <li><a href="/">Swiper</a></li>
+                <li><a href="/recommendations">Recommendations</a></li>
+                <li><a href="/chat">Chat Bot</a></li>
+            </ul>
+        </aside>
+    </div>
+
+    
+
+
+    <div class="main-content">
+        <h1 class = "text-align: center">Recommended Opportunities</h1>
+        
+        <div class="recommendations">
+            
+            <div class="recommendation-card">
+                <h2 id="subtitle">Article Title</h2>
+                <p id="Link-Article">
+                    <a href="#" id="article-link">Link to article</a>
+                </p>
+                <p id = "description" >Description</p>
+                <div class = "recommendation-info">
+                    <p id="name"><strong>Name</strong></p>
+                    <p id="college"><strong>College</strong></p>
+                    <p id="sID"><strong>Scholar ID</strong></p>
+                </div>
+                <p id="homepage" >Link to author homepage</p>            
+            </div>
+
+        </div>
+    </div>
+
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .recommendation-info{
+            display: flex;
+            gap: 10px;
+            align-items: baseline;
+
+        }
+        .recommendation-info p{
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+        }
+        .recommendation-info p:not(:last-child)::after {
+            content: " • "; 
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .header {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+         
+         .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; 
+            width: 250px;
+            height: 100%;
+            background-color: #f5f5f5;
+            box-shadow: 2px 0px 5px rgba(0,0,0,0.5);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #sidebarToggle {
+            position: fixed;
+            background-color: #697da7;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+        }
+
+
+        
+        .main-content {
+            margin-left: 270px;
+            padding: 20px;
+            
+        }
+
+        .main-content h1 {
+            color: #264653;
+            font-size: 28px;
+            margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        
+        .recommendations {
+            display: flex;
+            flex-direction: column; 
+            gap: 20px; 
+        }
+
+        .recommendation-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            max-width: 960px;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-5px); 
+        }
+
+        .recommendation-card h2 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #2a9d8f;
+        }
+
+        .recommendation-card p {
+            color: #555;
+        }
+
+        .horibars {
+            display: flex;
+            justify-content: space-around;  
+            align-items: center;
+            width: 100%;  
+            padding: 20px;
+            background-color: #f0f0f0; 
+            border: 2px solid #ccc; 
+            border-radius: 15px;  
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  
+        }
+
+        
+        .container li {
+            list-style-type: none; 
+            padding: 10px 20px;  
+            background-color: white;  
+            border: 1px solid #ccc;  
+            border-radius: 10px;  
+            margin: 0 10px;  
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
+        }
+
+        
+        html, body {
+            margin: 0;
+            padding: 0;
+            
+        }
+
+
+        .hero.is-custom {
+            background-color: #46639d; 
+            text-align: center;
+        }
+
+        .penn-apps-title {
+            color: white;
+            font-size: 50px;
+        }
+
+        
+        .content {
+            position: relative;
+            z-index: 1; 
+            text-align: center;
+            padding: 20px; 
+            color: black; 
+        }
+
+
+        .hidden {
+            display: none;
+        }
+        
+        .menu {
+            padding: 1rem;
+        }
+
+        .menu-label {
+            font-weight: bold;
+        }
+
+        .menu-list a {
+            color: #333;
+            padding: 0.5rem;
+        }
+
+        .menu-list a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; 
+            width: 250px;
+            height: 100%;
+            background-color: #f5f5f5;
+            box-shadow: 2px 0px 5px rgba(0,0,0,0.5);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .sidebar.open {
+            left: 0; 
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #sidebarToggle {
+            position: fixed;
+            background-color: #697da7;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+        }
+
+ 
+    </style>
+
+    <script>
+        url = "/api/Recs";
+        async function addPapers()
+        {
+            try{
+                const papers = await fetch("/api/Recs");
+                if (!papers.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log(papers);
+                return papers;
+                
+            } catch(error){
+                console.error(error);
+                return null;
+            }
+        }
+
+        createPapers();
+        async function createPapers(){
+            const papers = await addPapers();
+            
+            fetch("/api/Recs", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log(result);
+                const recommendationsContainer = document.querySelector('.recommendations');
+                recommendationsContainer.innerHTML = '';
+                result.forEach(paper => {
+                    const card = document.createElement('div');
+                    card.classList.add('recommendation-card');
+                    card.innerHTML = `
+                    <h2>${paper.title || "No Title Available"}</h2>
+                    <p><a href="${paper.link || "#"}" id="article-link">${paper.link ? "Google Scholar Article" : "No Link Available"}</a></p>
+                    <p><${paper.description || "No Description Available"}</p>
+                    <div class="recommendation-info">
+                        <p><strong>${paper.author || "No Professor Name"}</strong></p>
+                        <p><strong>${paper.college || "No College Available"}</strong></p>
+                        <p><strong>${paper.author_scholar_id || "No Scholar ID Available"}</strong></p>
+                    </div>
+                    <p><a href="${paper.author_homepage || "#"}">${paper.author_homepage ? "Author Homepage" : "No Homepage Available"}</a></p>
+                    `;
+                    recommendationsContainer.appendChild(card);
+                })
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+
+
+
+
+            for(let i =0; i<papers.length; i++){
+                const title = document.getElementById('subtitle');
+                const article_link = document.getElementById('article-link');
+                const desc = document.getElementById('description');
+                const name = document.getElementById('name');
+                const id = document.getElementById('sID');
+                const college = document.getElementById('college');
+                const homepage =  document.getElementById('homepage');
+
+                title.innerText = papers[i].title || "No Title Available";
+                article_link.innerText = papers[i].link ? "Google Scholar Article" : "No Link Available";
+                article_link.href = papers[i].link || "#";
+                desc.innerText = papers[i].description || "No Description Available";
+                name.innerText = papers[i].author || "No Professor Name";
+                id.innerText = papers[i].author_scholar_id || "No Scholar ID Available";
+                college.innerText = papers[i].college || "No College Available";
+                homepage.innerText = papers[i].author_homepage || "No Homepage Available";
+                if (!title || !article_link || !desc || !name || !id || !college || !homepage) {
+                    console.error("One or more elements not found in the professor container");
+                    return;
+                }      
+            }      
+
+                
+            
+        }
+
+
+        function toggleSidebar() 
+        {
+            const sidebar = document.getElementById("sidebar");
+            const toggleButton = document.getElementById("sidebarToggle");
+        
+            sidebar.classList.toggle("open");
+        
+            if (sidebar.classList.contains("open")) {
+                toggleButton.style.display = "none";
+            } else {
+                toggleButton.style.display = "block";
+            }
+        }
+
+        
+    </script>
+</body>
+</html>

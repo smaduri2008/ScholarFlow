@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="college.css" rel="stylesheet" type="text/css" />
+    <script src="colleges.js"></script>
+</head>
+<body>
+    <section class="hero is-custom">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title penn-apps-title"><i class="fas fa-wind"></i><b> ScholarFlow</b></h1>
+            </div>
+        </div>
+    </section>
+
+<button class="button is-primary" id="sidebarToggle" onclick="toggleSidebar()"><span class="icon ">
+    <i class="fas fa-bars"></i>
+</span></button>
+    
+    <div class="sidebar" id="sidebar">
+        <button class="delete is-large close-button" aria-label="close" onclick="toggleSidebar()"></button>
+        <aside class="menu has-background-light">
+            <p class="menu-label">Navigation</p>
+            <ul class="menu-list">
+                <li><a href="/">Swiper</a></li>
+                <li><a href="/recommendations">Recommendations</a></li>
+                <li><a href="/chat">Chat Bot</a></li>
+            </ul>
+        </aside>
+    </div>
+
+    
+
+    
+    <div class="columns">
+        <div class="column">
+            <div class="container">
+
+                <section class="section">
+                    <h1 class="title has-text-centered">Meet Your Professors</h1>
+
+                    <div class="professors-stack">
+                        <div class="professor-container visible">
+                            <div class="content">
+                                <h2 id="subtitle" >Article Title</h2>
+                                <p id="Link-Article">
+                                    <a href="#" id="article-link">Link to article</a>
+                                </p>
+                                <p id = "description" >Description</p>
+                                <div class = "professor-info" >
+                                    <p id="name">Name;</p>
+                                    <p id="college">College</p>
+                                    <p id="sID">Scholar ID</p>
+                                </div>
+                                <p id="homepage" >Link to author homepage</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class = "field swipe-buttons">
+                        <div class="control">
+                            <button class="button is-danger is-rounded no-button" onclick="swipeLeft()">
+                                <span class="icon ">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </button>
+                            <button class="button is-success is-rounded check-button"  onclick="swipeRight()">
+                                <span class="icon ">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .field {
+            justify-content: center;
+            display: flex;
+            position: relative;
+            bottom: 20px;
+            z-index: 100; 
+        }
+
+        .swipe-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000; 
+        }
+
+        .professor-info{
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            align-items: baseline;
+
+        }
+        .professor-info p{
+            margin: 0;
+            padding: 0;
+            white-space: nowrap;
+        }
+        .professor-info p:not(:last-child)::after {
+            content: " • "; 
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        .professor-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .professor-container::-webkit-scrollbar-thumb {
+            background-color: #46639d;
+            border-radius: 10px;
+        }
+
+        .professor-container::-webkit-scrollbar-track {
+            background-color: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        
+        .professor-container {
+            scrollbar-color: #46639d #f0f0f0;
+            scrollbar-width: thin;
+        }
+
+
+        .hero.is-custom {
+            background-color: #46639d; 
+            text-align: center;
+        }
+
+        .penn-apps-title {
+            color: white;
+            font-size: 50px;
+        }
+
+        .professor-container {
+            justify-content: center;    
+            position: relative;
+            width: 100%;
+            height: 350px; 
+            overflow: hidden;
+            border: 1px solid #ccc; 
+            border-radius: 38px; 
+            box-shadow: 0 0px 3px rgba(0, 0, 0, 0.1); 
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+            overflow-y: auto; 
+            background-color: white;
+        }
+
+        .professor-container.visible {
+            opacity: 1.4; 
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1; 
+            text-align: center;
+            padding: 20px; 
+            color: black; 
+        }
+
+        .check-button {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+
+        .no-button {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        
+        .swipe-right {
+            position:absolute;
+            z-index: -1;
+            transform: translateX(100%) rotate(20deg); 
+            opacity: 0;
+        }
+
+        .swipe-left {
+            transform: translateX(-100%) rotate(-20deg); 
+            opacity: 0;
+        }
+
+        .swipe {
+            transition: transform 0.8s ease, opacity 0.8s ease; 
+        }
+
+        .hidden {
+            display: none;
+        }
+        
+        .menu {
+            padding: 1rem;
+        }
+
+        .menu-label {
+            font-weight: bold;
+        }
+
+        .menu-list a {
+            color: #333;
+            padding: 0.5rem;
+        }
+
+        .menu-list a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; 
+            width: 250px;
+            height: 100%;
+            background-color: #f5f5f5;
+            box-shadow: 2px 0px 5px rgba(0,0,0,0.5);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .sidebar.open {
+            left: 0; 
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #sidebarToggle {
+            position: fixed;
+            background-color: #697da7;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+        }
+
+ 
+    </style>
+
+    <script>
+        updateProfessors();
+        async function fetchArticle(){
+            try 
+            {
+                const response = await fetch('/api/getRandomArticle'); 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const article = await response.json();
+                return article;
+                
+            } catch(error){
+                console.error('Error fetching random article');
+                return null;
+            }
+        }
+
+        async function updateProfessors(){
+
+            const article = await fetchArticle();
+
+            if(article){
+                const title = document.getElementById('subtitle');
+                const article_link = document.getElementById('article-link');
+                const desc = document.getElementById('description');
+                const name = document.getElementById('name');
+                const id = document.getElementById('sID');
+                const college = document.getElementById('college');
+                const homepage =  document.getElementById('homepage');
+
+                title.innerText = article.title || "No Title Available";
+                article_link.innerText = article.link ? "Google Scholar Article" : "No Link Available";
+                article_link.href = article.link || "#";
+                desc.innerText = article.description || "No Description Available";
+                name.innerText = article.author || "No Professor Name";
+                id.innerText = article.author_scholar_id || "No Scholar ID Available";
+                college.innerText = article.college || "No College Available";
+                homepage.innerText = article.author_homepage || "No Homepage Available";
+                if (!title || !article_link || !desc || !name || !id || !college || !homepage) {
+                    console.error("One or more elements not found in the professor container");
+                    return;
+                }            
+            
+                }
+            else{
+                console.log("failed to fetch articles");
+            }
+        }
+
+        async function getLikedArticleID()
+        {
+            const article = await fetchArticle();
+
+            const objectID = article._id;
+            console.log(objectID);
+            fetch("/api/addLiked", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"articleID": objectID.$oid}) 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log(result); 
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+            return objectID.toString();
+        }
+
+        async function getDislikedArticleID()
+        {
+            const article = await fetchArticle();
+
+            const objectID = article._id;
+            console.log(objectID);
+            fetch("/api/addDisliked", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({"articleID": objectID.$oid}) 
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log(result); 
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+            return objectID.toString();
+        }
+
+
+
+        function swipeRight() {
+            const professorContainer = document.getElementsByClassName("professor-container")[0];
+            professorContainer.classList.add('swipe', 'swipe-right');
+
+            getLikedArticleID();
+
+            setTimeout(() => {
+                professorContainer.classList.add('hidden'); 
+                professorContainer.classList.remove('swipe', 'swipe-right');
+                updateProfessors();
+                loadNewProfessor(); 
+            }, 500); 
+
+        }
+
+        function swipeLeft() {
+            const professorContainer = document.getElementsByClassName("professor-container")[0];
+            professorContainer.classList.add('swipe', 'swipe-left');
+
+            getDislikedArticleID();
+
+            setTimeout(() => {
+                professorContainer.classList.add('hidden'); 
+                professorContainer.classList.remove('swipe', 'swipe-left');
+                updateProfessors();
+                loadNewProfessor(); 
+            }, 500); 
+        }
+
+        function loadNewProfessor() {
+            const professorContainer = document.getElementsByClassName("professor-container")[0];
+            professorContainer.classList.remove('hidden');
+            professorContainer.style.opacity = "1"; 
+        }
+
+
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const toggleButton = document.getElementById("sidebarToggle");
+        
+            sidebar.classList.toggle("open");
+        
+            if (sidebar.classList.contains("open")) {
+                toggleButton.style.display = "none";
+            } else {
+                toggleButton.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Sign Up Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+</head>
+<body>
+    <section class="hero is-custom">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title penn-apps-title"><i class="fas fa-wind"></i> <b>ScholarFlow</b></h1>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="columns">
+            
+            <div class="column is-half">
+                <div class="form-section">
+                    <h2 class="title is-4">Login</h2>
+
+                    <form id="loginForm">
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control">
+                                <input class="input" type="text" id="username1" placeholder="Enter your username">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input" type="password" id="password1" placeholder="Enter your password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button login-button" type="button" onclick="login()">Login</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+
+            
+            <div class="column is-half">
+                <div class="form-section">
+                    <h2 class="title is-4">Sign Up</h2>
+
+                    <form id="signupForm">
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control">
+                                <input class="input" type="text" id="username2" placeholder="Enter your username">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input" type="password" id="password2" placeholder="Create a password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password Confirm</label>
+                            <div class="control">
+                                <input class="input" type="password" id="passwordconfirm" placeholder="Re-enter your password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button signup-button" type="button" onclick="signup()">Sign Up</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .form-section {
+            border: 1px solid #ddd;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero.is-custom {
+            background-color: #46639d; 
+            text-align: center;
+        }
+
+        .penn-apps-title {
+            color: white;
+            font-size: 50px;
+        }
+
+        .login-button, .signup-button {
+            color: white;
+            background-color: #46639d;
+            border-radius: 50px;
+            font-weight: 700;
+        }
+    </style>
+
+    <script>
+        
+        async function signup() {
+            const url = "/api/createUser";
+            var username = document.getElementById("username2").value;
+            var password = document.getElementById("password2").value;
+            var password_confirm = document.getElementById("passwordconfirm").value;
+
+            if (password === password_confirm) {
+                const data = {
+                    "username": username,
+                    "password": password
+                };
+
+                try {
+                    const response = await fetch(url, {
+                        method: "POST",
+                        mode: "cors",
+                        cache: "no-cache",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        redirect: "follow",
+                        referrerPolicy: "no-referrer",
+                        body: JSON.stringify(data),
+                    });
+
+                    if (response.status === 201 || response.status === 200) {
+                        alert("Sign Up Successful! Please Login!");
+                    } else if (response.status === 400) {
+                        alert("Missing username or password");
+                    } else if (response.status === 401) {
+                        alert("Username already exists!");
+                    } else {
+                        alert("Server Error");
+                    }
+                } catch (error) {
+                    console.error("Error during signup:", error);
+                    alert("Network or server error.");
+                }
+            } else {
+                alert("Passwords do not match");
+            }
+        }
+
+        async function login() {
+            const url = "/api/login";
+            var username = document.getElementById("username1").value;
+            var password = document.getElementById("password1").value;
+
+            const data = {
+                "username": username,
+                "password": password
+            };
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    mode: "cors",
+                    cache: "no-cache",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    redirect: "follow",
+                    referrerPolicy: "no-referrer",
+                    body: JSON.stringify(data),
+                });
+
+                if (response.status === 201 || response.status === 200) {
+                    alert("Login successful");
+                    window.location.href = "/";
+                } else if (response.status === 401) {
+                    alert("Wrong password or username");
+                } else {
+                    alert("Server Error");
+                }
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert("Network or server error.");
+            }
+        }
+    </script>
+
+</body>
+</html>

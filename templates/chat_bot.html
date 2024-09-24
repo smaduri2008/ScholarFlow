@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Search</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="college.css" rel="stylesheet" type="text/css" />
+    <script src="colleges.js"></script>
+</head>
+<body>
+    <section class="hero is-custom">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title penn-apps-title"><i class="fas fa-wind"></i> <b>ScholarFlow</b></h1>
+            </div>
+        </div>
+    </section>
+    
+    <button class="button is-primary" id="sidebarToggle" onclick="toggleSidebar()"><span class="icon ">
+        <i class="fas fa-bars"></i>
+    </span></button>
+    
+    <div class="sidebar" id="sidebar">
+        <button class="delete is-large close-button" aria-label="close" onclick="toggleSidebar()"></button>
+        <aside class="menu has-background-light">
+            <p class="menu-label">Navigation</p>
+            <ul class="menu-list">
+                <li><a href="/">Swiper</a></li>
+                <li><a href="/recommendations">Recommendations</a></li>
+                <li><a href="/chat">Chat Bot</a></li>
+            </ul>
+        </aside>
+    </div>
+    
+    <div class="chat-container">
+        <h1 class="chat-title" style="color: rgb(44, 44, 44);"><strong>Scholar Chat</strong></h1>
+        <div class="chat-bubbles" id="chatBubbles">
+           
+        </div>
+        <div class="chat-form">
+            <textarea class="input" id="chatInput" placeholder="e.g. Hello world"></textarea>
+            <button class="button is-link send-chat" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+            <button class="button is-link is-loading send-chat" id="loadingSpinner" style="display: none;"></button>
+
+        </div>
+    </div>
+
+    <style>
+        .chat-container {
+            width: 100%;
+            text-align: center;
+        }
+        .chat-form {
+            position: relative;
+            width: 50%;
+            margin: 20px auto;
+        }
+        .input {
+            width: 92%;
+            margin-right: 5px;
+        }
+        .send-chat {
+            float: right;
+        }
+        .bubble {
+            width: 50%;
+            background-color: rgb(218, 218, 218);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 10px auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .bubble-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .bubble-content {
+            font-size: 14px;
+            color: #333;
+        }
+        .hero.is-custom {
+            background-color: #46639d; 
+            text-align: center;
+        }
+        .penn-apps-title {
+            color: white;
+            font-size: 50px;
+        }
+         
+         .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; 
+            width: 250px;
+            height: 100%;
+            background-color: #f5f5f5;
+            box-shadow: 2px 0px 5px rgba(0,0,0,0.5);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .sidebar.open {
+            left: 0; 
+        }
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        #sidebarToggle {
+            position: fixed;
+            background-color: #697da7;
+            top: 20px;
+            left: 20px;
+            z-index: 1100;
+        }
+        .chat-title {
+            font-size: 35px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const toggleButton = document.getElementById("sidebarToggle");
+            sidebar.classList.toggle("open");
+            toggleButton.style.display = sidebar.classList.contains("open") ? "none" : "block";
+        }
+        var alternate = 0;
+        var chat = [];
+        function addMessage(user, content) {
+            alternate++;
+            const chatBubbles = document.getElementById("chatBubbles");
+            const bubble = document.createElement("div");
+            bubble.className = "bubble";
+            bubble.innerHTML = `<div class="bubble-title">${user}</div><div class="bubble-content">${content}</div>`;
+            chatBubbles.appendChild(bubble);
+            chatInput.value = ""; 
+            chatBubbles.scrollTop = chatBubbles.scrollHeight; 
+        }
+        function sendMessage()
+        {
+            const chatInput = document.getElementById("chatInput");
+            const messageText = chatInput.value.trim();
+
+            if (messageText && alternate % 2 == 0) {
+                addMessage("User", messageText);
+                getChatResponse(messageText)
+            }
+
+        }
+        function getChatResponse(query)
+        {
+            const url = '/api/llmReq'; 
+
+            const data = {
+            "message_history": chat,
+            "query": query
+            };
+
+            fetch(url, {
+            method: 'POST', 
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify(data) 
+            })
+            .then(response => response.json()) 
+            .then(data => {
+            chat = chat.concat(data)
+            addMessage("Assistant", data[1]["content"]) 
+            })
+            .catch((error) => {
+            console.error('Error:', error); 
+            });
+
+        }
+    </script>
+</body>
+</html>
